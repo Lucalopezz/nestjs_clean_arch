@@ -19,6 +19,11 @@ describe('User Entity unit tests', () => {
     expect(sut.name).toBeDefined();
     expect(sut.name).toEqual(props.name);
   });
+  it('Should update name field', () => {
+    const newName = 'New Name';
+    sut.update(newName);
+    expect(sut.name).toEqual(newName);
+  });
   it('Getter of email field', () => {
     expect(sut.email).toBeDefined();
     expect(sut.email).toEqual(props.email);
@@ -26,6 +31,11 @@ describe('User Entity unit tests', () => {
   it('Getter of password field', () => {
     expect(sut.password).toBeDefined();
     expect(sut.password).toEqual(props.password);
+  });
+  it('Should update password field', () => {
+    const newPassword = 'New Password';
+    sut.updatePassword(newPassword);
+    expect(sut.password).toEqual(newPassword);
   });
   it('Getter of createdAt field', () => {
     expect(sut.createdAt).toBeDefined();

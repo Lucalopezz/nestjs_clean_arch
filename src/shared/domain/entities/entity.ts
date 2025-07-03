@@ -18,10 +18,4 @@ export abstract class Entity<Props = any> {
       ...this.props,
     } as Required<{ id: string } & Props>;
   }
-  equals(entity?: Entity<Props>): boolean {
-    if (!entity || !(entity instanceof Entity)) {
-      return false;
-    }
-    return this.id === entity.id;
-  }
 }
