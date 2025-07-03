@@ -9,5 +9,5 @@ export function UserDataBuilder(props: Props): UserProps {
     email: props.email ?? faker.internet.email(),
     password: props.password ?? faker.internet.password(),
     createdAt: props.createdAt ?? new Date(),
-  }; 
+  };
 }
