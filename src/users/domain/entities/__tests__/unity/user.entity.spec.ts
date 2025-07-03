@@ -1,15 +1,11 @@
-import { faker } from '@faker-js/faker';
 import { UserEntity, UserProps } from '../../user.entity';
+import { UserDataBuilder } from '../../testing/helpers/user-data-builder';
 
 describe('User Entity unit tests', () => {
   let props: UserProps;
   let sut: UserEntity;
   beforeEach(() => {
-    props = {
-      name: faker.person.fullName(),
-      email: faker.internet.email(),
-      password: faker.internet.password(),
-    };
+    props = UserDataBuilder({});
     sut = new UserEntity(props);
   });
 
@@ -18,5 +14,21 @@ describe('User Entity unit tests', () => {
     expect(sut.props.email).toBe(props.email);
     expect(sut.props.password).toBe(props.password);
     expect(sut.props.createdAt).toBeDefined();
+  });
+  it('Getter of name field', () => {
+    expect(sut.name).toBeDefined();
+    expect(sut.name).toEqual(props.name);
+  });
+  it('Getter of email field', () => {
+    expect(sut.email).toBeDefined();
+    expect(sut.email).toEqual(props.email);
+  });
+  it('Getter of password field', () => {
+    expect(sut.password).toBeDefined();
+    expect(sut.password).toEqual(props.password);
+  });
+  it('Getter of createdAt field', () => {
+    expect(sut.createdAt).toBeDefined();
+    expect(sut.createdAt).toBeInstanceOf(Date);
   });
 });
