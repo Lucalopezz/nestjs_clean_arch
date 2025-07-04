@@ -1,5 +1,6 @@
 import { Entity } from '@/shared/domain/entities/entity';
 import { UserValidatorFactory } from '../validators/user.validator';
+import { EntityValidationError } from '@/shared/domain/errors/validation-error';
 
 export type UserProps = {
   name: string;
@@ -46,6 +47,9 @@ export class UserEntity extends Entity<UserProps> {
   static validade(data: UserProps) {
     // esse método é estático para ser chamado sem instanciar a classe
     const userValidator = UserValidatorFactory.create();
-    return userValidator.validate(data); //validando os dados do usuário
+    const isValid = userValidator.validate(data); //validando os dados do usuário
+    if (!isValid) {
+      throw new EntityValidationError(userValidator.errors);
+    }
   }
 }
