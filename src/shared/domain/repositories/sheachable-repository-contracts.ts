@@ -20,12 +20,12 @@ export class SearchParams {
   protected _sortDir: SortDirection | null;
   protected _filter: string | null;
 
-  constructor(props: SerachProps) {
-    this._page = props.page ?? 1;
-    this._perPage = props.perPage;
-    this._sort = props.sort ?? null;
-    this._sortDir = props.sortDir ?? null;
-    this._filter = props.filter ?? null;
+  constructor(props: SerachProps = {}) {
+    this.page = props.page ?? 1;
+    this.perPage = props.perPage;
+    this.sort = props.sort ?? null;
+    this.sortDir = props.sortDir ?? null;
+    this.filter = props.filter ?? null;
   }
 
   get page(): number {
