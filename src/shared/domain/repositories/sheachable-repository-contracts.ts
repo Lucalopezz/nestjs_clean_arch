@@ -70,7 +70,7 @@ export class SearchParams {
       this._sortDir = null;
       return;
     }
-    const dir = value?.toLowerCase();
+    const dir = `${value}`.toLowerCase();
     this._sortDir = dir !== 'asc' && dir !== 'desc' ? 'desc' : dir;
   }
 
