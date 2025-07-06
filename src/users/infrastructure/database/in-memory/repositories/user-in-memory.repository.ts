@@ -1,6 +1,6 @@
 import { ConflictError } from '@/shared/domain/errors/conflict-error';
 import { NotFoundError } from '@/shared/domain/errors/not-found-error';
-import { InMemoryRepository } from '@/shared/domain/repositories/in-memory.repository';
+import { InMemorySearchableRepository } from '@/shared/domain/repositories/in-memory-searchable.repository';
 import { UserEntity } from '@/users/domain/entities/user.entity';
 import { UserRepository } from '@/users/domain/repositories/user.repository';
 
@@ -9,7 +9,7 @@ import { UserRepository } from '@/users/domain/repositories/user.repository';
 // memória, como inserção, busca por ID, atualização e exclusão de entidades.
 // A classe UserInMemoryRepository implementa a interface UserRepository, que define métodos específicos
 export class UserInMemoryRepository
-  extends InMemoryRepository<UserEntity>
+  extends InMemorySearchableRepository<UserEntity>
   implements UserRepository
 {
   async findByEmail(email: string): Promise<UserEntity> {
