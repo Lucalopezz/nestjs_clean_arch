@@ -43,7 +43,7 @@ export class SearchParams {
     return this._perPage;
   }
   private set perPage(value: number) {
-    let _perPage = +value;
+    let _perPage = value === (true as any) ? this._perPage : +value;
     if (
       Number.isNaN(_perPage) ||
       _perPage <= 0 ||
