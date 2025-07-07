@@ -13,6 +13,16 @@ export type SerachProps<Filter = string> = {
   filter?: Filter | null;
 };
 
+export type SerachResultProps<E extends Entity, Filter> = {
+  items: E[];
+  total: number;
+  currentPage: number;
+  perPage: number;
+  sort?: string | null;
+  sortDir?: string | null;
+  filter?: Filter | null;
+};
+
 export class SearchParams {
   protected _page: number;
   protected _perPage = 15;
@@ -83,13 +93,48 @@ export class SearchParams {
   }
 }
 
+export class SearchResult<E extends Entity, Filter = string> {
+  readonly items: E[];
+  readonly total: number;
+  readonly currentPage: number;
+  readonly perPage: number;
+  readonly lastPage: number;
+  readonly sort?: string | null;
+  readonly sortDir?: string | null;
+  readonly filter?: Filter | null;
+
+  constructor(props: SerachResultProps<E, Filter>) {
+    this.items = props.items;
+    this.total = props.total;
+    this.currentPage = props.currentPage;
+    this.perPage = props.perPage;
+    this.lastPage = Math.ceil(this.total / this.perPage);
+    this.sort = props.sort ?? null;
+    this.sortDir = props.sortDir ?? null;
+    this.filter = props.filter ?? null;
+  }
+  toJSON(forceEntity = false) {
+    return {
+      items: forceEntity ? this.items.map((item) => item.toJSON()) : this.items,
+      total: this.total,
+      currentPage: this.currentPage,
+      perPage: this.perPage,
+      lastPage: this.lastPage,
+      sort: this.sort,
+      sortDir: this.sortDir,
+      filter: this.filter,
+    };
+  }
+}
+
 // This interface extends the basic repository interface to include a search method.
 // It is used for repositories that need to support searching entities based on some criteria.
 // The SearchInput and SearchOutput types are generic, allowing for flexibility in the search criteria and
 export interface SearchableRepositoryInterface<
   E extends Entity,
-  SearchInput,
-  SearchOutput,
+  Filter = string,
+  SearchInput = SearchParams,
+  SearchOutput = SearchResult<E, Filter>,
 > extends RepositoryInterface<E> {
-  search(input: SearchParams): Promise<SearchOutput>;
+  search(props: SearchInput): Promise<SearchOutput>;
 }
