@@ -1,17 +1,13 @@
 import { UserRepository } from '@/users/domain/repositories/user.repository';
+import { UserOutput } from '../dtos/user-output.dto';
 
 // eslint-disable-next-line @typescript-eslint/no-namespace
 export namespace GetUserUseCase {
   export type Input = {
     id: string;
   };
-  // all user properties
-  export type Output = {
-    id: string;
-    email: string;
-    name: string;
-    createdAt: Date;
-  };
+
+  export type Output = UserOutput;
 
   export class UseCase {
     constructor(private userRepository: UserRepository.Repository) {}
