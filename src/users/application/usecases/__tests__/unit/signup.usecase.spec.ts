@@ -4,7 +4,7 @@ import { HashProvider } from '@/shared/application/providers/hash-provider';
 import { ConflictError } from '@/shared/domain/errors/conflict-error';
 import { BcryptjsHashProvider } from '@/shared/application/providers/bcryptjs-hash.provider';
 import { UserDataBuilder } from '@/users/domain/entities/testing/helpers/user-data-builder';
-import { BadRequestError } from '@/shared/domain/errors/bad-request-error';
+import { BadRequestError } from '@/shared/application/errors/bad-request-error';
 
 describe('Signup unit tests', () => {
   let sut: SignupUseCase.UseCase;

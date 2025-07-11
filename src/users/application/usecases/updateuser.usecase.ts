@@ -1,7 +1,7 @@
 import { UserRepository } from '@/users/domain/repositories/user.repository';
 import { UserOutput, UserOutputMapper } from '../dtos/user-output.dto';
 import { UseCase as DefaultUseCase } from '@/shared/application/usecases/use-case';
-import { BadRequestError } from '@/shared/domain/errors/bad-request-error';
+import { BadRequestError } from '@/shared/application/errors/bad-request-error';
 
 // eslint-disable-next-line @typescript-eslint/no-namespace
 export namespace UpdateUserUseCase {
