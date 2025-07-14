@@ -1,7 +1,5 @@
 import { Module } from '@nestjs/common';
-
 import { UsersController } from './users.controller';
-import { UsersService } from './users.service';
 import { SignupUseCase } from '../application/usecases/signup.usecase';
 import { UserInMemoryRepository } from './database/in-memory/repositories/user-in-memory.repository';
 import { BcryptjsHashProvider } from '@/shared/application/providers/bcryptjs-hash.provider';
@@ -17,7 +15,6 @@ import { DeleteUserUseCase } from '../application/usecases/deleteuser.usecase';
 @Module({
   controllers: [UsersController],
   providers: [
-    UsersService,
     {
       provide: 'UserRepository', // this is the name, if u want to use in memory or a prisma repo
       useClass: UserInMemoryRepository,
