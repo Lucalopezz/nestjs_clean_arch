@@ -9,6 +9,7 @@ export class UserPrismaRepository implements UserRepository.Repository {
 
   sortableFields: string[];
 
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   findByEmail(email: string): Promise<UserEntity> {
     throw new Error('Method not implemented.');
   }
