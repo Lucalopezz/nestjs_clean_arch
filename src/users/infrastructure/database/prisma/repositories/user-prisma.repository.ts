@@ -8,7 +8,7 @@ import { UserModelMapper } from './models/user-model.mapper';
 export class UserPrismaRepository implements UserRepository.Repository {
   constructor(private prismaService: PrismaService) {}
 
-  sortableFields: string[];
+  sortableFields: string[] = ['name', 'createdAt'];
 
   findByEmail(email: string): Promise<UserEntity> {
     throw new Error('Method not implemented.');
@@ -18,10 +18,52 @@ export class UserPrismaRepository implements UserRepository.Repository {
     throw new Error('Method not implemented.');
   }
 
-  search(
+  async search(
     props: UserRepository.SearchParams,
   ): Promise<UserRepository.SearchResult> {
-    throw new Error('Method not implemented.');
+    const sortable = this.sortableFields?.includes(props.sort) || false;
+    // these variables get what is in the props or the default value
+    const orderByField = sortable ? props.sort : 'createdAt';
+    const orderByDir = sortable ? props.sortDir : 'desc';
+
+    const count = await this.prismaService.user.count({
+      ...(props.filter && {
+        where: {
+          name: {
+            contains: props.filter,
+            mode: 'insensitive',
+          },
+        },
+      }),
+    });
+    const models = await this.prismaService.user.findMany({
+      ...(props.filter && {
+        where: {
+          name: {
+            contains: props.filter,
+            mode: 'insensitive',
+          },
+        },
+        orderBy: {
+          [orderByField]: orderByDir,
+        },
+        // Calculates the number of records to skip based on the current page.
+        // If a valid page number is provided (greater than 0), it skips (page - 1) * perPage records.
+        // Otherwise, it skips 1 record by default (although this might unintentionally skip the first item).
+        skip:
+          props.page && props.page > 0 ? (props.page - 1) * props.perPage : 1,
+        take: props.perPage && props.perPage > 0 ? props.perPage : 15,
+      }),
+    });
+    return new UserRepository.SearchResult({
+      items: await models.map((model) => UserModelMapper.toEntity(model)),
+      total: count,
+      currentPage: props.page,
+      perPage: props.perPage,
+      sort: orderByField,
+      sortDir: orderByDir,
+      filter: props.filter,
+    });
   }
 
   async insert(entity: UserEntity): Promise<void> {
