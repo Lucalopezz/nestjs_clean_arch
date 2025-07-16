@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
 import { NotFoundError } from '@/shared/domain/errors/not-found-error';
 import { PrismaService } from '@/shared/infrastructure/database/prisma/prisma.service';
 import { UserEntity } from '@/users/domain/entities/user.entity';
@@ -9,7 +10,6 @@ export class UserPrismaRepository implements UserRepository.Repository {
 
   sortableFields: string[];
 
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   findByEmail(email: string): Promise<UserEntity> {
     throw new Error('Method not implemented.');
   }
@@ -34,8 +34,9 @@ export class UserPrismaRepository implements UserRepository.Repository {
     return this._get(id);
   }
 
-  findAll(): Promise<UserEntity[]> {
-    throw new Error('Method not implemented.');
+  async findAll(): Promise<UserEntity[]> {
+    const models = await this.prismaService.user.findMany();
+    return models.map((model) => UserModelMapper.toEntity(model));
   }
 
   update(entity: UserEntity): Promise<void> {

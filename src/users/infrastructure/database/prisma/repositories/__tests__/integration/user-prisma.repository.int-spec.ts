@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
 import { PrismaClient } from '@prisma/client';
 import { UserPrismaRepository } from '../../user-prisma.repository';
 import { Test, TestingModule } from '@nestjs/testing';
@@ -52,5 +53,18 @@ describe('UserPrismaRepository integration tests', () => {
     });
 
     expect(result).toStrictEqual(entity.toJSON());
+  });
+  it('should returns all users', async () => {
+    const entity = new UserEntity(UserDataBuilder({}));
+    const newUser = await prismaService.user.create({
+      data: entity.toJSON(),
+    });
+
+    const entities = await sut.findAll();
+    expect(entities).toHaveLength(1);
+    expect(JSON.stringify(entities)).toBe(JSON.stringify([entity]));
+    entities.map((item) =>
+      expect(item.toJSON()).toStrictEqual(entity.toJSON()),
+    );
   });
 });
