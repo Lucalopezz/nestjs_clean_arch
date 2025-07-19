@@ -1,6 +1,8 @@
 import { Exclude, Expose } from 'class-transformer';
 import { PaginationPresenter } from './pagination.presenter';
 
+// Base presenter for paginated collections.
+// Exposes "meta" (pagination info) and requires "data" via getData().
 export abstract class CollectionPresenter {
   @Exclude()
   protected paginationPresenter: PaginationPresenter;
@@ -16,3 +18,11 @@ export abstract class CollectionPresenter {
 
   abstract getData();
 }
+// {
+//   "meta": {
+//     "total": 100,
+//     "page": 1,
+//     "perPage": 10
+//   },
+//   "data": [ ... ]
+// }
