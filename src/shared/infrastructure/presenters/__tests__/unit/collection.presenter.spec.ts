@@ -3,9 +3,6 @@ import { PaginationPresenter } from '../../pagination.presenter';
 import { CollectionPresenter } from '../../collection.presenter';
 
 class StubCollectionPresenter extends CollectionPresenter {
-  getData() {
-    throw new Error('Method not implemented.');
-  }
   data = [1, 2, 3];
 }
 

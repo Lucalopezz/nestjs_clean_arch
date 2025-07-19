@@ -12,11 +12,11 @@ export abstract class CollectionPresenter {
   }
 
   @Expose({ name: 'meta' })
-  getMeta() {
+  get meta() {
     return this.paginationPresenter;
   }
 
-  abstract getData();
+  abstract get data();
 }
 // {
 //   "meta": {
