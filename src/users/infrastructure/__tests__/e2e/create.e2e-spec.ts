@@ -9,6 +9,7 @@ import { DatabaseModule } from '@/shared/infrastructure/database/database.module
 import request from 'supertest';
 import { UsersController } from '../../users.controller';
 import { instanceToPlain } from 'class-transformer';
+import { applyGlobalConfig } from '@/global-config';
 import { setupPrismaTests } from '@/shared/infrastructure/database/testing/setup-prisma-tests';
 
 describe('UsersController unit tests', () => {
@@ -28,6 +29,7 @@ describe('UsersController unit tests', () => {
       ],
     }).compile();
     app = module.createNestApplication();
+    applyGlobalConfig(app);
     await app.init();
     repository = module.get<UserRepository.Repository>('UserRepository');
   });
@@ -47,16 +49,11 @@ describe('UsersController unit tests', () => {
         .post('/users')
         .send(signupDto)
         .expect(201);
-      expect(Object.keys(res.body)).toStrictEqual([
-        'id',
-        'name',
-        'email',
-        'createdAt',
-      ]);
-      const user = await repository.findById(res.body.id);
+      expect(Object.keys(res.body)).toStrictEqual(['data']);
+      const user = await repository.findById(res.body.data.id);
       const presenter = UsersController.userToResponse(user.toJSON());
       const serialized = instanceToPlain(presenter);
-      expect(res.body).toStrictEqual(serialized);
+      expect(res.body.data).toStrictEqual(serialized);
     });
   });
 });
